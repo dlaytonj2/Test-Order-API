@@ -1,0 +1,72 @@
+openapi: 3.0.1
+info:
+    title: Order API
+    description: For placing an order for products by My Company A product number and quantity should be specified
+    version: "v1"
+servers:
+    - url: PLUGIN_HOSTNAME
+info:
+  title: Order API
+  version: 1.0.0
+paths:
+  /order:
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                  description: The ID of the product to order.
+                quantity:
+                  type: integer
+                  description: The quantity of the product to order.
+              required:
+                - product_id
+                - quantity
+      responses:
+        '201':
+          description: Order created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_number:
+                    type: string
+                    description: The unique order number.
+                  date_of_order:
+                    type: string
+                    description: The date the order was created.
+                  product:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the ordered product.
+                      price:
+                        type: number
+                        format: float
+                        description: The price of the ordered product.
+                  quantity:
+                    type: integer
+                    description: The quantity of the ordered product.
+                  total_price:
+                    type: number
+                    format: float
+                    description: The total price of the order.
+        '400':
+          description: Bad Request. Either product_id or quantity is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: A description of the error that occurred.
